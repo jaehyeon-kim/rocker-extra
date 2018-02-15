@@ -47,8 +47,8 @@ RUN wget -nv ${DOWNLOAD_URL}/hadoop-${HADOOP_VERSION}.tar.gz \
 ENV SPARK_HOME=/usr/spark-${SPARK_VERSION}
 ENV SPARK_DIST_CLASSPATH="$HADOOP_HOME/etc/hadoop/*:$HADOOP_HOME/share/hadoop/common/lib/*:$HADOOP_HOME/share/hadoop/common/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/hdfs/lib/*:$HADOOP_HOME/share/hadoop/hdfs/*:$HADOOP_HOME/share/hadoop/yarn/lib/*:$HADOOP_HOME/share/hadoop/yarn/*:$HADOOP_HOME/share/hadoop/mapreduce/lib/*:$HADOOP_HOME/share/hadoop/mapreduce/*:$HADOOP_HOME/share/hadoop/tools/lib/*"
 ENV PATH $PATH:${SPARK_HOME}/bin
-RUN wget -nv ${DOWNLOAD_URL}/${SPARK_PACKAGE}.tar.gz \
-    && tar xf spark-${HADOOP_VERSION}.tar.gz \
+RUN wget -nv ${DOWNLOAD_URL}/${SPARK_PACKAGE}.tgz \
+    && tar xf spark-${HADOOP_VERSION}.tgz \
     && mv ${SPARK_PACKAGE} ${SPARK_HOME} \
     && chown -R root:root ${SPARK_HOME}
 
