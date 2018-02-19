@@ -1,4 +1,4 @@
-FROM rockerextra/python:3.4.3
+FROM rocker/tidyverse:3.4.3
 MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 
 ARG SPARK_VERSION
