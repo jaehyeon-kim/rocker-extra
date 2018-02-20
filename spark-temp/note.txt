@@ -1,0 +1,3 @@
+https://github.com/SingularitiesCR/hadoop-docker
+
+https://github.com/SingularitiesCR/spark-docker
