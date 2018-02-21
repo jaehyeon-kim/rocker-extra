@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source /etc/bash.bashrc
+
 # Check user environment variable
 if [[ -z "${HDFS_USER}" ]]; then
   echo "Missing HDFS_USER environment variable" >&2

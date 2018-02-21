@@ -2,8 +2,10 @@ version: "2"
 
 services:
   master:
-    image: tst
-    command: start-spark master
+    build:
+        context: .
+        dockerfile: Dockerfile-master
+    command: /init
     hostname: master
     ports:
       - "6066:6066"
@@ -12,8 +14,10 @@ services:
       - "50070:50070"
       - "8787:8787"
   worker:
-    image: tst
-    command: start-spark worker master
+    build:
+        context: .
+        dockerfile: Dockerfile-worker
+    command: /init
     environment:
       SPARK_WORKER_CORES: 1
       SPARK_WORKER_MEMORY: 2g

@@ -1,7 +1,0 @@
-FROM rockerextra/spark:3.4.3
-MAINTAINER Jaehyeon Kim <dottami@gmail.com>
-
-RUN rm -rf /etc/services.d/rstudio \
-    && mkdir -p /etc/services.d/spark-worker \
-    && echo '#!/bin/bash \n /opt/util/bin/start-spark worker master' > /etc/services.d/spark-worker/run
-
