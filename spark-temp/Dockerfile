@@ -7,11 +7,11 @@ ARG SPARK_VERSION
 ARG SPARK_ARCHIVE
 ARG DOWNLOAD_URL
 
-ENV HADOOP_VERSION=${HADOOP_VERSION:-2.8.2} \
-    HADOOP_ARCHIVE=hadoop-$HADOOP_VERSION.tar.gz \
-    SPARK_VERSION=${SPARK_VERSION:-2.2.1} \
-    SPARK_ARCHIVE=spark-$SPARK_VERSION-bin-without-hadoop.tgz \
-    DOWNLOAD_URL=${DOWNLOAD_URL:-https://mirrors.ocf.berkeley.edu}
+ENV HADOOP_VERSION=${HADOOP_VERSION:-2.8.2}
+ENV HADOOP_ARCHIVE=hadoop-${HADOOP_VERSION}.tar.gz
+ENV SPARK_VERSION=${SPARK_VERSION:-2.2.1}
+ENV SPARK_ARCHIVE=spark-${SPARK_VERSION}-bin-without-hadoop.tgz
+ENV DOWNLOAD_URL=${DOWNLOAD_URL:-https://mirrors.ocf.berkeley.edu}
 
 ENV http_proxy=http://10.74.1.25:8080 \
     https_proxy=http://10.74.1.25:8080
@@ -22,7 +22,7 @@ ENV http_proxy=http://10.74.1.25:8080 \
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
     PATH=$PATH:$JAVA_HOME/bin
 RUN apt-get update \
-    && apt-get install -y curl netcat openjdk-8-jdk
+    && apt-get install -y curl procps netcat openjdk-8-jdk
 
 ####
 #### Setup Hadoop
@@ -30,14 +30,14 @@ RUN apt-get update \
 # Install Hadoop and set paths
 ENV HADOOP_HOME=/usr/local/hadoop-$HADOOP_VERSION
 RUN mkdir -p "${HADOOP_HOME}" \
-    && export DOWNLOAD_PATH=apache/hadoop/common/hadoop-$HADOOP_VERSION/$HADOOP_ARCHIVE \
-    && curl -sSL $DOWNLOAD_URL/$DOWNLOAD_PATH | \
-        tar -xz -C $HADOOP_HOME --strip-components 1 \
-    && rm -rf $HADOOP_ARCHIVE
+    && export DOWNLOAD_PATH=apache/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_ARCHIVE} \
+    && curl -sSL ${DOWNLOAD_URL}/${DOWNLOAD_PATH} | \
+        tar -xz -C ${HADOOP_HOME} --strip-components 1 \
+    && rm -rf ${HADOOP_ARCHIVE}
 
 # Set paths
-ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
-    HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
+ENV HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop \
+    HADOOP_LIBEXEC_DIR=${HADOOP_HOME}/libexec \
     PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
 # Copy and fix configuration files
@@ -74,11 +74,12 @@ EXPOSE 10020 13562 19888
 # Install Spark and set paths
 ENV SPARK_HOME=/usr/local/spark-$SPARK_VERSION
 RUN mkdir -p "${SPARK_HOME}" \
-    && export DOWNLOAD_PATH=apache/spark/spark-$SPARK_VERSION/$SPARK_ARCHIVE \
-    && curl -sSL $DOWNLOAD_URL/$DOWNLOAD_PATH | \
-        tar -xz -C $SPARK_HOME --strip-components 1 \
-    && rm -rf $SPARK_ARCHIVE
+    && export DOWNLOAD_PATH=apache/spark/spark-${SPARK_VERSION}/${SPARK_ARCHIVE} \
+    && curl -sSL ${DOWNLOAD_URL}/${DOWNLOAD_PATH} | \
+        tar -xz -C ${SPARK_HOME} --strip-components 1 \
+    && rm -rf ${SPARK_ARCHIVE}
 COPY ./spark-conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
+COPY ./spark-conf/log4j.properties $SPARK_HOME/conf/log4j.properties
 ENV PATH=$PATH:$SPARK_HOME/bin
 
 # Copy start script

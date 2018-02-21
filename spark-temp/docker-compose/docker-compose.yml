@@ -2,7 +2,7 @@ version: "2"
 
 services:
   master:
-    image: singularities/spark
+    image: tst
     command: start-spark master
     hostname: master
     ports:
@@ -10,8 +10,9 @@ services:
       - "7070:7070"
       - "8080:8080"
       - "50070:50070"
+      - "8787:8787"
   worker:
-    image: singularities/spark
+    image: tst
     command: start-spark worker master
     environment:
       SPARK_WORKER_CORES: 1
