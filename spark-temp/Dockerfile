@@ -27,7 +27,7 @@ RUN apt-get update \
 ####
 #### Setup Hadoop
 ####
-# Install Hadoop and set paths
+# Install Hadoop
 ENV HADOOP_HOME=/usr/local/hadoop-$HADOOP_VERSION
 RUN mkdir -p "${HADOOP_HOME}" \
     && export DOWNLOAD_PATH=apache/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_ARCHIVE} \
@@ -53,12 +53,6 @@ RUN sed -i.bak 's/hadoop-daemons.sh/hadoop-daemon.sh/g' \
 COPY ./hadoop-conf/start* /opt/util/bin/
 ENV PATH=$PATH:/opt/util/bin
 
-# Fix environment for other users
-RUN echo 'export HADOOP_HOME=$HADOOP_HOME' > /etc/bash.bashrc.tmp \
-    && echo 'export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:/opt/util/bin' >> /etc/bash.bashrc.tmp \
-    && cat /etc/bash.bashrc >> /etc/bash.bashrc.tmp \
-    && mv -f /etc/bash.bashrc.tmp /etc/bash.bashrc
-
 # HDFS volume
 VOLUME /opt/hdfs
 
@@ -71,7 +65,7 @@ EXPOSE 10020 13562 19888
 ####
 #### Setup Spark
 ####
-# Install Spark and set paths
+# Install Spark
 ENV SPARK_HOME=/usr/local/spark-$SPARK_VERSION
 RUN mkdir -p "${SPARK_HOME}" \
     && export DOWNLOAD_PATH=apache/spark/spark-${SPARK_VERSION}/${SPARK_ARCHIVE} \
@@ -80,14 +74,23 @@ RUN mkdir -p "${SPARK_HOME}" \
     && rm -rf ${SPARK_ARCHIVE}
 COPY ./spark-conf/spark-env.sh $SPARK_HOME/conf/spark-env.sh
 COPY ./spark-conf/log4j.properties $SPARK_HOME/conf/log4j.properties
+
+# Set paths
 ENV PATH=$PATH:$SPARK_HOME/bin
 
 # Copy start script
 COPY ./spark-conf/start-spark /opt/util/bin/start-spark
 
-# Fix environment for other users
-RUN echo 'export SPARK_HOME=$SPARK_HOME' >> /etc/bash.bashrc \
-    && echo 'export PATH=$PATH:$SPARK_HOME/bin'>> /etc/bash.bashrc
-
 # Ports
 EXPOSE 6066 7077 8080 8081
+
+# Fix environment for other users/docker compose build
+RUN echo 'export JAVA_HOME=$JAVA_HOME' > /etc/bash.bashrc.tmp \
+    && echo 'export HADOOP_HOME=$HADOOP_HOME' >> /etc/bash.bashrc.tmp \
+    && echo 'export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop' >> /etc/bash.bashrc.tmp \
+    && echo 'export HADOOP_LIBEXEC_DIR=${HADOOP_HOME}/libexec' >> /etc/bash.bashrc.tmp \
+    && echo 'export SPARK_HOME=$SPARK_HOME' >> /etc/bash.bashrc.tmp \
+    && echo 'export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SPARK_HOME/bin:/opt/util/bin' >> /etc/bash.bashrc.tmp \
+    && cat /etc/bash.bashrc >> /etc/bash.bashrc.tmp \
+    && mv -f /etc/bash.bashrc.tmp /etc/bash.bashrc
+
