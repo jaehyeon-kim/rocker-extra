@@ -2,6 +2,10 @@ https://github.com/SingularitiesCR/hadoop-docker
 
 https://github.com/SingularitiesCR/spark-docker
 
+1. images based on rocker/tidyverse
+2. Spark and RStudio started by S6 init system
+3. varying size of cluster (workers)
+
 
 $SPARK_HOME/bin/run-example SparkPi 10
 
@@ -9,7 +13,8 @@ $SPARK_HOME/bin/run-example SparkPi 10
 Sys.setenv('JAVA_HOME'='/usr/lib/jvm/java-8-openjdk-amd64') 
 Sys.setenv('HADOOP_HOME'='/usr/local/hadoop-2.8.2') 
 Sys.setenv('SPARK_HOME'='/usr/local/spark-2.2.1') 
-library(SparkR, lib.loc=file.path(Sys.getenv('SPARK_HOME'),'R', 'lib')) sparkR.session(master = "spark://master:7077", sparkConfig = list(spark.driver.memory = "2g")) 
+library(SparkR, lib.loc=file.path(Sys.getenv('SPARK_HOME'),'R', 'lib'))
+sparkR.session(master = "spark://master:7077", sparkConfig = list(spark.driver.memory = "2g")) 
 df <- as.DataFrame(faithful)
 # Displays the first part of the SparkDataFrame
 head(df)
