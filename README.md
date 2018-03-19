@@ -4,7 +4,7 @@ Extra docker images from `rocker/tidyverse`. All images will be found in [Docker
 
 ## Structure of [rocker](https://github.com/rocker-org/rocker-versioned) project
 
-All extra images will be from `rocker/tidyverse`.
+All **rockerextra** images will be from `rocker/tidyverse`.
 
 ```
 debian:stretch
@@ -15,14 +15,18 @@ debian:stretch
 
 ## Structure of [rockerextra](https://github.com/jaehyeon-kim/rocker-extra) project
 
-See the links for [ssh](https://github.com/krlmlr/debian-ssh) and [Architecture Server](https://www.getarchitect.io/) of [OpenAnalytics](https://www.openanalytics.eu/).
-
 ```
 rocker/tidyverse
+    --> rockerextra/spark
     --> rockerextra/python
-    --> rockerextra/remote (ssh + architecture server)
-        --> rockerextra/rserve
-        --> rockerextra/spark
-            --> rockerextra/spark-master
-            --> rockerextra/spark-worker
+        --> rockerextra/jupyterlab
+            --> rockerextra/pyremote
 ```
+
+* _rockerextra/spark_
+    - hadoop 2.8.2 + spark 2.2.1
+    - sources from [SingularitiesCR/hadoop-docker](https://github.com/SingularitiesCR/hadoop-docker) and [SingularitiesCR/spark-docker](https://github.com/SingularitiesCR/spark-docker)
+    - see for [further details](https://github.com/jaehyeon-kim/sparkr-demo)
+* _rockerextra/python_ - python 3.6.4 + [pyenv](https://github.com/pyenv/pyenv)
+* _rockerextra/jupyterlab_ - [jupyter lab](https://github.com/jupyterlab/jupyterlab)
+* _rockerextra/pyremote_ - [anaconda sublime plugin](http://damnwidget.github.io/anaconda/) + ssh

@@ -22,9 +22,10 @@ RUN apt-get update \
         xz-utils \
         tk-dev
 
-## https://stackoverflow.com/questions/41422826/install-python-of-specific-version-system-wide-with-pyenv/43321411
-RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv \
-    && /root/.pyenv/plugins/python-build/bin/python-build $PYTHON_VERSION /usr/local/python-$PYTHON_VERSION/
-
-
+RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
+    && tar xvf Python-${PYTHON_VERSION}.tgz \
+    && cd Python-${PYTHON_VERSION} \
+    && ./configure --enable-optimizations \
+    && make -j8 \
+    && make altinstall
     
