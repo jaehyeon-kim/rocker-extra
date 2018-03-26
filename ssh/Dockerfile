@@ -1,9 +1,12 @@
 FROM rockerextra/python:latest
 MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 
-# https://github.com/krlmlr/debian-ssh
+# install emacs
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server sudo
+    && apt-get install -y emacs25
+
+# https://github.com/krlmlr/debian-ssh
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server sudo
 
 ADD set_root_pw.sh /set_root_pw.sh
 ADD run.sh /run.sh

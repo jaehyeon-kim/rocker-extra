@@ -19,8 +19,7 @@ debian:stretch
 rocker/tidyverse
     --> rockerextra/spark
     --> rockerextra/python
-        --> rockerextra/jupyterlab
-            --> rockerextra/pyremote
+        --> rockerextra/ssh
 ```
 
 * _rockerextra/spark_
@@ -28,6 +27,5 @@ rocker/tidyverse
     - sources from [SingularitiesCR/hadoop-docker](https://github.com/SingularitiesCR/hadoop-docker) and [SingularitiesCR/spark-docker](https://github.com/SingularitiesCR/spark-docker)
     - see for [further details](https://github.com/jaehyeon-kim/sparkr-demo)
 * _rockerextra/python_ - python 3.6.4 + [pyenv](https://github.com/pyenv/pyenv)
-* _rockerextra/ssh_ - SSH connection
-    + docker run --name ssh -d -p 2222:22 -p 8787:8787 -e SSH_KEY="$(cat ./sample/id_rsa.pub)" rockerextra/python:latest
-* _rockerextra/emacs_ - Emacs 25
+* _rockerextra/ssh_ - SSH connection + emacs 25
+    + docker run --name ssh -d -p 2222:22 -p 8787:8787 -e SSH_KEY="$(cat ./sample/id_rsa.pub)" rockerextra/python:tag
