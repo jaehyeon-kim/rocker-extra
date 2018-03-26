@@ -1,4 +1,4 @@
-FROM rockerextra/python:latest
+FROM rockerextra/python:master
 MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 
 # install emacs
