@@ -1,6 +1,7 @@
 FROM rockerextra/python:3.4
 MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 
+# https://github.com/krlmlr/debian-ssh
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install openssh-server sudo
 
@@ -13,19 +14,13 @@ RUN sed -i -e 's/\r$//' /set_root_pw.sh \
 
 RUN mkdir -p /var/run/sshd && sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
     && sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && touch /root/.Xauthority \
-    && true
+    && touch /root/.Xauthority
 
-## Set a default user. Available via runtime flag `--user docker`
-## Add user to 'staff' group, granting them write privileges to /usr/local/lib/R/site.library
-## User should also have & own a home directory, but also be able to sudo
-RUN useradd docker \
-    && echo "docker:docker" | chpasswd \
-    && mkdir /home/docker \
-    && chown docker:docker /home/docker \
-    && addgroup docker staff \
-    && addgroup docker sudo \
-    && true
+## add rstudio user to sudoer
+RUN addgroup rstudio sudo
+
+## add run.sh to S6
+RUN mkdir -p /etc/services.d/ssh \
+    && echo '#!/usr/bin/with-contenv sh \n /run.sh' > /etc/services.d/ssh/run
 
 EXPOSE 22
-CMD ["/run.sh"]

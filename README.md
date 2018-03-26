@@ -19,8 +19,8 @@ debian:stretch
 rocker/tidyverse
     --> rockerextra/spark
     --> rockerextra/python
-        --> rockerextra/jupyterlab
-            --> rockerextra/pyremote
+        --> rockerextra/ssh
+            --> rockerextra/emacs
 ```
 
 * _rockerextra/spark_
@@ -28,5 +28,5 @@ rocker/tidyverse
     - sources from [SingularitiesCR/hadoop-docker](https://github.com/SingularitiesCR/hadoop-docker) and [SingularitiesCR/spark-docker](https://github.com/SingularitiesCR/spark-docker)
     - see for [further details](https://github.com/jaehyeon-kim/sparkr-demo)
 * _rockerextra/python_ - python 3.6.4 + [pyenv](https://github.com/pyenv/pyenv)
-* _rockerextra/jupyterlab_ - [jupyter lab](https://github.com/jupyterlab/jupyterlab)
-* _rockerextra/pyremote_ - [anaconda sublime plugin](http://damnwidget.github.io/anaconda/) + ssh
+* _rockerextra/ssh_ - SSH connection
+* _rockerextra/emacs_ - Emacs 25
