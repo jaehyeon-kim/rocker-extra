@@ -11,7 +11,8 @@ RUN apt-get update \
 RUN R -e 'devtools::install_github("rstudio/shiny")' \
   && R -e 'devtools::install_github("ramnathv/htmlwidgets@async")' \
   && R -e 'devtools::install_github("jcheng5/plotly@joe/feature/async")' \
-  && R -e 'devtools::install_github("rstudio/DT@async")'
+  && R -e 'devtools::install_github("rstudio/DT@async")' \
+  && R -e 'install.packages("future")'
 
 ## optional packages
 RUN R -e 'devtools::install_github("rstudio/leaflet")' \
