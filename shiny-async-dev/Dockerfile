@@ -1,10 +1,11 @@
 FROM rocker/tidyverse:3.4
 MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 
-## need to build httpuv from source when installing shiny from GitHub
 ## build from https://github.com/rocker-org/shiny in production
+## need to build httpuv from source when installing shiny from GitHub
+## procps for monitoring
 RUN apt-get update \
-  && apt-get install -y autoconf automake libtool
+  && apt-get install -y autoconf automake libtool procps
 
 ## promises package installed with rstudio/shiny
 ## https://rstudio.github.io/promises/index.html
