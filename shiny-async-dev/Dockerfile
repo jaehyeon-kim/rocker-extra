@@ -44,7 +44,7 @@ RUN apt-get -y install gdebi-core libxt-dev \
   && mkdir -p /etc/services.d/shiny-server \
   && echo '#!/usr/bin/with-contenv bash \
           \n exec shiny-server > /var/log/shiny-server.log' \
-          > /etc/services.d/rstudio/run
+          > /etc/services.d/shiny-server/run
 
 EXPOSE 3838
 
