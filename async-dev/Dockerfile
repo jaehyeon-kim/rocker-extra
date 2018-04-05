@@ -14,6 +14,21 @@ RUN R -e 'devtools::install_github("rstudio/shiny")' \
   && R -e 'devtools::install_github("rstudio/DT@async")' \
   && R -e 'devtools::install_github("rstudio/leaflet")' # optional
 
+## testing packages
+RUN apt-get install -y bzip2
+RUN R -e 'devtools::install_github("rstudio/profvis")' \
+  && R -e 'devtools::install_github("rstudio/shinytest")' \
+  && R -e 'devtools::install_github("rstudio/shinyloadtest")'
+
+USER rstudio
+
+RUN R -e 'shinytest::installDependencies()'
+RUN wget --no-verbose https://s3-us-west-2.amazonaws.com/rstudio-proxyrec-execs/rstudio/proxyrec/44/44.1/main-linux -O /home/rstudio/proxyrec
+
+USER root
+
+RUN chmod 766 /home/rstudio/proxyrec
+
 ## mostly from Rocker project
 ## https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/add_shiny.sh
 RUN apt-get -y install gdebi-core libxt-dev \
