@@ -17,7 +17,8 @@ RUN R -e 'devtools::install_github("rstudio/shiny")' \
 
 ## optional packages
 RUN R -e 'devtools::install_github("rstudio/leaflet")' \
-  && R -e 'devtools::install_github("rstudio/rmarkdown")'
+  && R -e 'devtools::install_github("rstudio/rmarkdown")' \
+  && R -e 'install.packages("shinydashboard")'
 
 ## testing packages
 RUN apt-get install -y bzip2
