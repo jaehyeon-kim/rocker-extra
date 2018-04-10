@@ -15,16 +15,17 @@ RUN R -e 'devtools::install_github("rstudio/shiny")' \
   && R -e 'devtools::install_github("rstudio/DT@async")' \
   && R -e 'install.packages("future")'
 
-## optional packages
-RUN R -e 'devtools::install_github("rstudio/leaflet")' \
-  && R -e 'devtools::install_github("rstudio/rmarkdown")' \
-  && R -e 'install.packages("shinydashboard")'
-
 ## testing packages
 RUN apt-get install -y bzip2
 RUN R -e 'devtools::install_github("rstudio/profvis")' \
   && R -e 'devtools::install_github("rstudio/shinytest")' \
   && R -e 'devtools::install_github("rstudio/shinyloadtest")'
+
+## optional packages
+RUN R -e 'devtools::install_github("rstudio/leaflet")' \
+  && R -e 'devtools::install_github("rstudio/rmarkdown")' \
+  && R -e 'install.packages("shinydashboard")' \
+  && R -e 'devtools::install_github("andrewsali/shinycssloaders")'
 
 USER rstudio
 
