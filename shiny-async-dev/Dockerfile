@@ -1,43 +1,50 @@
 FROM rocker/tidyverse:3.4
 MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 
-## build from https://github.com/rocker-org/shiny in production
-## need to build httpuv from source when installing shiny from GitHub
-## procps for monitoring
+#### build from https://github.com/rocker-org/shiny in production
+#### need to build httpuv from source when installing shiny from GitHub
+#### procps for monitoring
 RUN apt-get update \
   && apt-get install -y autoconf automake libtool procps
 
-## promises package installed with rstudio/shiny
-## https://rstudio.github.io/promises/index.html
+#### promises package installed with rstudio/shiny
+#### https://rstudio.github.io/promises/index.html
 RUN R -e 'devtools::install_github("rstudio/shiny")' \
   && R -e 'devtools::install_github("ramnathv/htmlwidgets@async")' \
   && R -e 'devtools::install_github("jcheng5/plotly@joe/feature/async")' \
   && R -e 'devtools::install_github("rstudio/DT@async")' \
   && R -e 'install.packages("future")'
 
-## testing packages
-RUN apt-get install -y bzip2
-RUN R -e 'devtools::install_github("rstudio/profvis")' \
-  && R -e 'devtools::install_github("rstudio/shinytest")' \
-  && R -e 'devtools::install_github("rstudio/shinyloadtest")'
+#### testing packages
+## profvis
+RUN R -e 'devtools::install_github("rstudio/profvis")'
 
-## optional packages
+## RSelenium
+RUN R -e 'install.packages("RSelenium")'
+
+## shinytest
+#RUN apt-get install -y bzip2 \
+#  && R -e 'devtools::install_github("rstudio/shinytest")'
+#USER rstudio
+#RUN R -e 'shinytest::installDependencies()'
+#USER root
+
+## shinyloadtest
+#RUN R -e 'devtools::install_github("rstudio/shinyloadtest")'
+#USER rstudio
+#RUN wget --no-verbose https://s3-us-west-2.amazonaws.com/rstudio-proxyrec-execs/rstudio/proxyrec/44/44.1/main-linux -O /home/rstudio/proxyrec
+#USER root
+#RUN chmod 766 /home/rstudio/proxyrec
+
+#### optional packages
 RUN R -e 'devtools::install_github("rstudio/leaflet")' \
   && R -e 'devtools::install_github("rstudio/rmarkdown")' \
   && R -e 'install.packages("shinydashboard")' \
   && R -e 'devtools::install_github("andrewsali/shinycssloaders")'
 
-USER rstudio
-
-RUN R -e 'shinytest::installDependencies()'
-RUN wget --no-verbose https://s3-us-west-2.amazonaws.com/rstudio-proxyrec-execs/rstudio/proxyrec/44/44.1/main-linux -O /home/rstudio/proxyrec
-
-USER root
-
-RUN chmod 766 /home/rstudio/proxyrec
-
-## mostly from Rocker project
-## https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/add_shiny.sh
+#### mostly from Rocker project
+#### https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/add_shiny.sh
+#### shiny server started by S6 init system (i.e. by /init)
 RUN apt-get -y install gdebi-core libxt-dev \
   && wget --no-verbose https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64/VERSION -O "version.txt" \
   && VERSION=$(cat version.txt) \
