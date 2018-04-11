@@ -16,20 +16,18 @@ RUN R -e 'devtools::install_github("rstudio/shiny")' \
   && R -e 'install.packages("future")'
 
 #### testing packages
-## profvis
-RUN R -e 'devtools::install_github("rstudio/profvis")'
+RUN apt-get install -y bzip2 \
+  && R -e 'devtools::install_github("rstudio/profvis")' \
+  && R -e 'devtools::install_github("rstudio/shinytest")' \
+  && R -e 'install.packages("RSelenium")'
 
-## RSelenium
-RUN R -e 'install.packages("RSelenium")'
+## PhantomJS will be installed
+## https://rstudio.github.io/shinytest/reference/installDependencies.html
+USER rstudio
+RUN R -e 'shinytest::installDependencies()'
+USER root
 
-## shinytest
-#RUN apt-get install -y bzip2 \
-#  && R -e 'devtools::install_github("rstudio/shinytest")'
-#USER rstudio
-#RUN R -e 'shinytest::installDependencies()'
-#USER root
-
-## shinyloadtest
+## shinyloadtest - seem to be unstable
 #RUN R -e 'devtools::install_github("rstudio/shinyloadtest")'
 #USER rstudio
 #RUN wget --no-verbose https://s3-us-west-2.amazonaws.com/rstudio-proxyrec-execs/rstudio/proxyrec/44/44.1/main-linux -O /home/rstudio/proxyrec
