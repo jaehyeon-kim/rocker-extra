@@ -38,7 +38,8 @@ USER root
 RUN R -e 'devtools::install_github("rstudio/leaflet")' \
   && R -e 'devtools::install_github("rstudio/rmarkdown")' \
   && R -e 'install.packages("shinydashboard")' \
-  && R -e 'devtools::install_github("andrewsali/shinycssloaders")'
+  && R -e 'devtools::install_github("andrewsali/shinycssloaders")' \
+  && R -e 'devtools::install_github("daattali/shinyjs")' \
 
 #### mostly from Rocker project
 #### https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/add_shiny.sh
