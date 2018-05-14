@@ -7,25 +7,27 @@ MAINTAINER Jaehyeon Kim <dottami@gmail.com>
 RUN apt-get update \
   && apt-get install -y autoconf automake libtool procps
 
-#### promises package installed with rstudio/shiny
+#### promises and some necessary packages
 #### https://rstudio.github.io/promises/index.html
 RUN R -e 'devtools::install_github("rstudio/shiny")' \
+  && R -e 'devtools::install_github("rstudio/rmarkdown")' \
   && R -e 'devtools::install_github("ramnathv/htmlwidgets@async")' \
   && R -e 'devtools::install_github("jcheng5/plotly@joe/feature/async")' \
   && R -e 'devtools::install_github("rstudio/DT@async")' \
+  && R -e 'install.packages("highcharter")' \
   && R -e 'install.packages("future")'
 
 #### testing packages
-RUN apt-get install -y bzip2 \
-  && R -e 'devtools::install_github("rstudio/profvis")' \
-  && R -e 'devtools::install_github("rstudio/shinytest")' \
-  && R -e 'install.packages("RSelenium")'
+#RUN apt-get install -y bzip2 \
+#  && R -e 'devtools::install_github("rstudio/profvis")' \
+#  && R -e 'devtools::install_github("rstudio/shinytest")' \
+#  && R -e 'install.packages("RSelenium")'
 
 ## PhantomJS will be installed
 ## https://rstudio.github.io/shinytest/reference/installDependencies.html
-USER rstudio
-RUN R -e 'shinytest::installDependencies()'
-USER root
+#USER rstudio
+#RUN R -e 'shinytest::installDependencies()'
+#USER root
 
 ## shinyloadtest - seem to be unstable
 #RUN R -e 'devtools::install_github("rstudio/shinyloadtest")'
@@ -35,11 +37,10 @@ USER root
 #RUN chmod 766 /home/rstudio/proxyrec
 
 #### optional packages
-RUN R -e 'devtools::install_github("rstudio/leaflet")' \
-  && R -e 'devtools::install_github("rstudio/rmarkdown")' \
-  && R -e 'install.packages("shinydashboard")' \
-  && R -e 'devtools::install_github("andrewsali/shinycssloaders")' \
-  && R -e 'devtools::install_github("daattali/shinyjs")'
+#RUN R -e 'devtools::install_github("rstudio/leaflet")' \
+#  && R -e 'install.packages("shinydashboard")' \
+#  && R -e 'devtools::install_github("andrewsali/shinycssloaders")' \
+#  && R -e 'devtools::install_github("daattali/shinyjs")'
 
 #### mostly from Rocker project
 #### https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/add_shiny.sh
