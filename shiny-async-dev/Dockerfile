@@ -61,7 +61,8 @@ RUN apt-get -y install gdebi-core libxt-dev \
           > /etc/services.d/shiny-server/run
 
 ### RServe
-RUN apt-get install -y libssl-dev wget curl \
+RUN apt-get update \
+  && apt-get install -y libssl-dev wget curl \
   && wget https://www.rforge.net/src/contrib/Rserve_1.8-5.tar.gz \
   && /usr/local/bin/R CMD INSTALL Rserve_1.8-5.tar.gz
 
